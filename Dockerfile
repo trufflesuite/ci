@@ -39,6 +39,9 @@ RUN npm install -g npm
 # use https checkout to avoid requiring deploy keys
 RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
 
+# for web3's internal bignumber.js dependency
+RUN git config --global url."https".insteadOf "git+https"
+
 # confirm installation
 RUN node -v
 RUN npm -v
