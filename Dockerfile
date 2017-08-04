@@ -37,6 +37,6 @@ RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
 RUN node -v
 RUN npm -v
 
-RUN npm install -g "https://github.com/trufflesuite/truffle-checkout/tarball/tc-test"
+RUN npm install -g "https://github.com/trufflesuite/truffle-checkout/tarball/89177d2d0c1ded0271f6e9916471f73e3273e152"
 
 ENTRYPOINT /bin/bash
