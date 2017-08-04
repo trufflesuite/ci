@@ -28,15 +28,25 @@ RUN source $NVM_DIR/nvm.sh \
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-RUN cd $(npm root -g)/npm && npm install fs-extra && sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
+# fix bug with npm permissions as root (https://github.com/npm/npm/issues/13306)
+RUN cd $(npm root -g)/npm && \
+    npm install fs-extra && \
+    sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
 
+# upgrade NPM because npm v5 is faster
 RUN npm install -g npm
+
+# use https checkout to avoid requiring deploy keys
 RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
 
 # confirm installation
 RUN node -v
 RUN npm -v
 
+# install `tc`
 RUN npm install -g "https://github.com/trufflesuite/truffle-checkout/tarball/89177d2d0c1ded0271f6e9916471f73e3273e152"
+
+# grab reference checkout for faster subsequent `npm install`s
+RUN tc use truffle:master
 
 ENTRYPOINT /bin/bash
