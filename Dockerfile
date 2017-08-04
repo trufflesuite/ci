@@ -7,7 +7,7 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 # update the repository sources list
 # and install dependencies
 RUN apt-get update \
-    && apt-get install -y curl git \
+    && apt-get install -y curl git python build-essential \
     && apt-get -y autoclean
 
 # nvm environment variables
@@ -28,9 +28,15 @@ RUN source $NVM_DIR/nvm.sh \
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
+RUN cd $(npm root -g)/npm && npm install fs-extra && sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
+
+RUN npm install -g npm
+RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
+
 # confirm installation
 RUN node -v
 RUN npm -v
 
+RUN npm install -g "https://github.com/trufflesuite/truffle-checkout/tarball/tc-test"
 
 ENTRYPOINT /bin/bash
