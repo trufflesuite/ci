@@ -1,6 +1,5 @@
 FROM debian:latest
 WORKDIR /var/workspace
-COPY bin /var/workspace/bin
 
 # replace bourne with bash to be able to source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
