@@ -49,4 +49,4 @@ RUN npm install -g "https://github.com/trufflesuite/truffle-checkout/tarball/891
 # grab reference checkout for faster subsequent `npm install`s
 RUN tc use truffle:master
 
-ENTRYPOINT /bin/bash
+COPY bin /usr/local/bin

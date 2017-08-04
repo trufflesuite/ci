@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+# Set magic variables for current file & dir
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
+__base="$(basename ${__file} .sh)"
+
+run_tests () {
+  local repo=$1
+  local target=$2
+  local branch=$3
+
+  tc use -f truffle-core:${target} ${repo}@${branch} && \
+    tc test truffle
+}
+
+run_tests "$@"
