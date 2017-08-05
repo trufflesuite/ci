@@ -44,7 +44,7 @@ RUN node -v
 RUN npm -v
 
 # install `tc`
-RUN npm install -g "https://github.com/trufflesuite/truffle-checkout/tarball/599309a40cbd3afb8613237304f81cf7535918a9"
+RUN npm install -g "https://github.com/trufflesuite/truffle-checkout/tarball/1003587a52ef9dd1ba722b10262caf044d256a75"
 
 # grab reference checkout for faster subsequent `npm install`s
 RUN tc use truffle:master
