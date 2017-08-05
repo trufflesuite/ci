@@ -16,7 +16,7 @@ run_tests () {
   local branch=$3
 
   tc use -f ${repo}@${branch} && \
-    tc test ${repo}
+    tc test ${repo} ~~ ${repo}
 }
 
 run_tests "$@"
