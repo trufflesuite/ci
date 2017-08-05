@@ -33,9 +33,6 @@ RUN cd $(npm root -g)/npm && \
     npm install fs-extra && \
     sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
 
-# upgrade NPM because npm v5 is faster
-RUN npm install -g npm
-
 # use https checkout to avoid requiring deploy keys
 RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
 
