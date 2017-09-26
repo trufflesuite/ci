@@ -15,10 +15,17 @@ run_tests () {
   local target=$2
   local branch=$3
 
-  meta pkgs checkout -f truffle:${target} ${repo}@${branch} && \
-    meta npm install && \
-    meta npm symlink && \
-    meta pkgs test truffle :: truffle
+  echo "meta pkgs checkout truffle:${target} ${repo}@${branch} --fetch"
+  meta pkgs checkout truffle:${target} ${repo}@${branch} --fetch
+
+  echo "meta npm install"
+  meta npm install
+
+  echo "meta npm symlink"
+  meta npm symlink
+
+  echo "meta pkgs test truffle :: truffle"
+  meta pkgs test truffle :: truffle
 }
 
 run_tests "$@"

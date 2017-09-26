@@ -15,9 +15,14 @@ run_tests () {
   local target=$2
   local branch=$3
 
-  meta pkgs checkout -f ${repo}@${branch} && \
-    meta npm install && \
-    meta pkgs test ${repo} :: ${repo}
+  echo "meta pkgs checkout ${repo}@${branch} --fetch"
+  meta pkgs checkout ${repo}@${branch} --fetch
+
+  echo "meta npm install"
+  meta npm install
+
+  echo "meta pkgs test ${repo} :: ${repo}"
+  meta pkgs test ${repo} :: ${repo}
 }
 
 run_tests "$@"
