@@ -15,8 +15,10 @@ run_tests () {
   local target=$2
   local branch=$3
 
-  tc use -f truffle:${target} ${repo}@${branch} && \
-    tc test truffle
+  meta pkgs checkout -f truffle:${target} ${repo}@${branch} && \
+    meta npm install && \
+    meta npm symlink && \
+    meta pkgs test truffle :: truffle
 }
 
 run_tests "$@"

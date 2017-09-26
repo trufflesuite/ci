@@ -43,10 +43,13 @@ RUN git config --global url."https".insteadOf "git+https"
 RUN node -v
 RUN npm -v
 
-# install `tc`
-RUN npm install -g "https://github.com/trufflesuite/truffle-checkout/tarball/dc408a5c0a9a5e8f7cee33d1dc7a10db7bcfd1d4"
-
 # grab reference checkout for faster subsequent `npm install`s
-RUN tc use truffle:master
+RUN git clone git@github.com:trufflesuite/truffle.git
+RUN npm install -g meta
+WORKDIR /var/workspace/truffle
+
+RUN npm install
+RUN meta git update
+RUN meta npm install
 
 COPY bin /usr/local/bin

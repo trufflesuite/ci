@@ -15,8 +15,9 @@ run_tests () {
   local target=$2
   local branch=$3
 
-  tc use -f ${repo}@${branch} && \
-    tc test ${repo} ~~ ${repo}
+  meta pkgs checkout -f ${repo}@${branch} && \
+    meta npm install && \
+    meta pkgs test ${repo} :: ${repo}
 }
 
 run_tests "$@"

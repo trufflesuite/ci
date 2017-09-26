@@ -15,8 +15,10 @@ run_tests () {
   local target=$2
   local branch=$3
 
-  tc use -f truffle-core:${target} ${repo}@${branch} && \
-    tc test --strict-children truffle-core ~~ ${repo}
+  meta pkgs checkout -f truffle-core:${target} ${repo}@${branch} && \
+    meta npm install && \
+    meta npm symlink && \
+    meta pkgs test --strict=children truffle-core :: ${repo}
 }
 
 run_tests "$@"
