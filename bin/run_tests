@@ -63,13 +63,16 @@ run_tests () {
   echo
   meta npm install
 
-  echo
-  echo
-  echo $(head -c 79 /dev/zero | tr '\0' '=')
-  echo "$ meta npm symlink"
-  echo $(head -c 79 /dev/zero | tr '\0' '=')
-  echo
-  meta npm symlink
+  # only symlink PRs (branch builds are standalone)
+  if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    echo
+    echo
+    echo $(head -c 79 /dev/zero | tr '\0' '=')
+    echo "$ meta npm symlink"
+    echo $(head -c 79 /dev/zero | tr '\0' '=')
+    echo
+    meta npm symlink
+  fi
 
   case $TEST in
     repo)
