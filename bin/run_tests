@@ -1,0 +1,105 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+# Set magic variables for current file & dir
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
+__base="$(basename ${__file} .sh)"
+
+
+run_tests () {
+  local repo=$( basename $TRAVIS_REPO_SLUG )
+  local remote="origin"
+
+  if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TEST" != "repo" ]; then
+    echo
+    echo "Skipping \`$TEST\` tests for branch build."
+    echo
+    exit 0
+  fi
+
+  if [ "$TRAVIS_PULL_REQUEST_SLUG" != "" ]; then
+    remote=$( dirname $TRAVIS_PULL_REQUEST_SLUG )
+  fi
+
+  if [ "$remote" = "trufflesuite" ]; then
+    remote="origin"
+  fi
+
+  local terms=("truffle:${TRAVIS_BRANCH}")
+  if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    terms+=("truffle:${remote}/${TRAVIS_PULL_REQUEST_BRANCH}")
+  fi
+
+  if [ "$remote" != "origin" ]; then
+    pushd "dependencies/${repo}"
+    echo
+    echo
+    echo $(head -c 79 /dev/zero | tr '\0' '=')
+    echo "$ git remote add ${remote} git@github.com:${TRAVIS_PULL_REQUEST_SLUG}.git"
+    echo $(head -c 79 /dev/zero | tr '\0' '=')
+    echo
+    git remote add ${remote} git@github.com:${TRAVIS_PULL_REQUEST_SLUG}.git
+    git fetch ${remote}
+    popd
+  fi
+
+  echo
+  echo
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo "$  meta pkgs checkout ${terms[@]} --fetch --greedy"
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo
+  meta pkgs checkout "${terms[@]}" --fetch --greedy
+
+  echo
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo "$ meta npm install"
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo
+  meta npm install
+
+  echo
+  echo
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo "$ meta npm symlink"
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo
+  meta npm symlink
+
+  case $TEST in
+    repo)
+      echo
+      echo
+      echo $(head -c 79 /dev/zero | tr '\0' '=')
+      echo "$ meta pkgs test ${repo} :: ${repo}"
+      echo $(head -c 79 /dev/zero | tr '\0' '=')
+      echo
+      meta pkgs test ${repo} :: ${repo}
+      ;;
+    upstream)
+      echo
+      echo
+      echo $(head -c 79 /dev/zero | tr '\0' '=')
+      echo "$ meta pkgs test truffle-core :: ${repo} --strict=children"
+      echo $(head -c 79 /dev/zero | tr '\0' '=')
+      echo
+      meta pkgs test truffle-core :: ${repo} --strict=children
+      ;;
+    scenario)
+      echo
+      echo
+      echo $(head -c 79 /dev/zero | tr '\0' '=')
+      echo "$ meta pkgs test truffle :: truffle"
+      echo $(head -c 79 /dev/zero | tr '\0' '=')
+      echo
+      meta pkgs test truffle :: truffle
+      ;;
+  esac
+}
+
+run_tests "$@"
