@@ -52,6 +52,7 @@ run_tests () {
     echo $(head -c 79 /dev/zero | tr '\0' '=')
     echo
     git remote add ${remote} git@github.com:${TRAVIS_PULL_REQUEST_SLUG}.git
+    popd
   fi
 
   echo
@@ -61,7 +62,6 @@ run_tests () {
   echo $(head -c 79 /dev/zero | tr '\0' '=')
   echo
   meta git fetch --all
-  popd
 
   echo
   echo
