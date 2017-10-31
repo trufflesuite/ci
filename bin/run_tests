@@ -66,6 +66,14 @@ run_tests () {
   echo
   echo
   echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo "$ meta git pull"
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo
+  meta git pull
+  
+  echo
+  echo
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
   echo "$  meta pkgs checkout ${terms[@]} --greedy"
   echo $(head -c 79 /dev/zero | tr '\0' '=')
   echo
