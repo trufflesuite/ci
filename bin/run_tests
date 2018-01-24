@@ -81,6 +81,13 @@ run_tests () {
 
   echo
   echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo "meta git update"
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
+  echo
+  meta git update
+
+  echo
+  echo $(head -c 79 /dev/zero | tr '\0' '=')
   echo "$ meta npm install"
   echo $(head -c 79 /dev/zero | tr '\0' '=')
   echo
