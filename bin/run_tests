@@ -22,6 +22,13 @@ run_tests () {
     exit 0
   fi
 
+  if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" != "master" ]; then
+    echo
+    echo "Skipping \`$TEST\` tests for non-release push build."
+    echo
+    exit 0
+  fi
+
   echo
   echo $(head -c 79 /dev/zero | tr '\0' '=')
   echo "meta git update"
@@ -47,7 +54,7 @@ run_tests () {
     if [ "$repo" != "truffle" ]; then
       pushd "dependencies/${repo}"
     fi
-    
+
     echo
     echo
     echo $(head -c 79 /dev/zero | tr '\0' '=')
@@ -55,7 +62,7 @@ run_tests () {
     echo $(head -c 79 /dev/zero | tr '\0' '=')
     echo
     git remote add ${remote} git@github.com:${TRAVIS_PULL_REQUEST_SLUG}.git
-    
+
     if [ "$repo" != "truffle" ]; then
       popd
     fi
@@ -76,7 +83,7 @@ run_tests () {
   echo $(head -c 79 /dev/zero | tr '\0' '=')
   echo
   meta git pull
-  
+
   echo
   echo
   echo $(head -c 79 /dev/zero | tr '\0' '=')
