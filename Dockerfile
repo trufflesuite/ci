@@ -13,6 +13,7 @@ RUN apt-get update \
 # nvm environment variables
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 6.9.1
+ENV LTS_VERSION 8.11.1
 
 # install nvm
 # https://github.com/creationix/nvm#install-script
@@ -21,6 +22,7 @@ RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/i
 # install node and npm
 RUN source $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
+    && nvm install $LTS_VERSION \
     && nvm alias default $NODE_VERSION \
     && nvm use default
 
