@@ -25,7 +25,7 @@ RUN source $NVM_DIR/nvm.sh \
     && nvm install $LTS_VERSION \
     && nvm alias default $NODE_VERSION \
     && nvm alias lts $LTS_VERSION \
-    && nvm use default
+    && nvm use lts
 
 # add node and npm to path so the commands are available
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
