@@ -28,11 +28,6 @@ RUN source $NVM_DIR/nvm.sh \
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-# fix bug with npm permissions as root (https://github.com/npm/npm/issues/13306)
-RUN cd $(npm root -g)/npm && \
-    npm install fs-extra && \
-    sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
-
 # use https checkout to avoid requiring deploy keys
 RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
 
